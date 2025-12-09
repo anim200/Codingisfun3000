@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        vector<int> last(26, -1);  // last position of each character
+
+        // Step 1: store last index of each character
+        for (int i = 0; i < (int)s.size(); i++) {
+            last[s[i] - 'a'] = i;
+        }
+
+        vector<int> result;
+        int start = 0;  // start of current partition
+        int end = 0;    // farthest last index in current partition
+
+        // Step 2: walk through string and form partitions
+        for (int i = 0; i < (int)s.size(); i++) {
+            end = max(end, last[s[i] - 'a']); // update farthest point
+
+            // When we reach the farthest last index, we close a partition
+            if (i == end) {
+                result.push_back(end - start + 1);
+                start = i + 1;  // next partition starts after this
+            }
+        }
+
+        return result;
+    }
+};
